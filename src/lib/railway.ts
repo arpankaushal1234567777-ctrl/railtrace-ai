@@ -53,12 +53,13 @@ export async function getTrainData(
     },
 
     route: schedules.map((station) => ({
-      stationCode: station.stationCode,
-      stationName: station.stationName,
-      arrivalTime: station.arrivalTime,
-      departureTime: station.departureTime,
-      distance: station.distance,
-    })),
+  stationCode: station.stationCode,
+  stationName: station.stationName,
+  arrivalTime: station.arrivalTime,
+  departureTime: station.departureTime,
+  distance: station.distance,
+  sequence: station.sequence,
+})),
 
     insights,
   };

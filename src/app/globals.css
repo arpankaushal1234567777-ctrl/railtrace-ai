@@ -377,23 +377,17 @@ a {
 }
 
 .rt-route-card {
-  margin-top: 24px;
-
+  margin-top: 28px;
   padding: 28px;
-
-  border-radius: 30px;
-
+  border-radius: 28px;
   background: rgba(255,255,255,0.03);
-
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 
 .rt-route-card h3 {
-  margin-bottom: 24px;
-
-  font-size: 24px;
-
-  letter-spacing: -1px;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 28px;
 }
 
 .rt-route-list {
@@ -404,6 +398,7 @@ a {
 
 .rt-route-item {
   display: flex;
+  align-items: flex-start;
   gap: 18px;
 }
 
@@ -417,42 +412,27 @@ a {
   width: 14px;
   height: 14px;
   border-radius: 999px;
-
-  background: var(--accent);
-
-  box-shadow: 0 0 18px rgba(124,92,255,0.8);
+  background: #7c5cff;
+  box-shadow: 0 0 18px rgba(124,92,255,0.9);
 }
 
 .rt-route-track {
   width: 2px;
-  flex: 1;
-
-  min-height: 40px;
-
+  height: 46px;
+  background: rgba(124,92,255,0.35);
   margin-top: 6px;
-
-  background:
-    linear-gradient(
-      180deg,
-      var(--accent),
-      transparent
-    );
 }
 
 .rt-route-item strong {
+  font-size: 1.2rem;
   display: block;
-
-  margin-bottom: 6px;
-
-  font-size: 16px;
 }
 
 .rt-route-item p {
-  color: var(--muted);
-
-  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 6px;
+  font-size: 0.95rem;
 }
-
 .rt-status-pill.live {
   background: rgba(34,197,94,0.12);
 
@@ -962,4 +942,16 @@ a {
 
 .rt-ai-card li {
   margin-bottom: 6px;
+}
+
+.rt-map-wrapper {
+  margin-top: 28px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.rt-map {
+  width: 100%;
+  height: 520px;
 }

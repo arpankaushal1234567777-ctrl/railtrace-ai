@@ -17,7 +17,14 @@ import RecentSearches from "@/components/train/RecentSearches";
 import AIInsights from "@/components/ai/AIInsights";
 import ChatMessages from "@/components/ai/ChatMessages";
 import TypingIndicator from "@/components/ai/TypingIndicator";
+import dynamic from "next/dynamic";
 
+const TrainMap = dynamic(
+  () => import("../train/TrainMap"),
+  {
+    ssr: false,
+  }
+);
 
 export default function SearchBox() {
 
@@ -238,8 +245,11 @@ setMessages(updatedMessages);
   insights={result?.insights}
 />
 
-    <TrainRoute route={result.route} />
-  </>
+   <TrainRoute route={result.route} />
+
+<TrainMap route={result.route} />
+
+</>
 )}
     </section>
   );

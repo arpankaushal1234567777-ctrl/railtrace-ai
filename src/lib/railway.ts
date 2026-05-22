@@ -23,27 +23,41 @@ export async function getTrainData(trainNumber: string) {
     },
 
     route: [
-      {
-        stationCode: "NZM",
-        stationName: "Hazrat Nizamuddin",
-      },
-      {
-        stationCode: "AGR",
-        stationName: "Agra Cantt",
-      },
-      {
-        stationCode: "MTJ",
-        stationName: "Mathura Junction",
-      },
-      {
-        stationCode: "KOTA",
-        stationName: "Kota Junction",
-      },
-      {
-        stationCode: "BCT",
-        stationName: "Mumbai Central",
-      },
-    ],
+  {
+    stationCode: "NZM",
+    stationName: "Hazrat Nizamuddin",
+    lat: 28.588,
+    lng: 77.254,
+  },
+
+  {
+    stationCode: "AGR",
+    stationName: "Agra Cantt",
+    lat: 27.153,
+    lng: 78.024,
+  },
+
+  {
+    stationCode: "MTJ",
+    stationName: "Mathura Junction",
+    lat: 27.492,
+    lng: 77.673,
+  },
+
+  {
+    stationCode: "KOTA",
+    stationName: "Kota Junction",
+    lat: 25.213,
+    lng: 75.864,
+  },
+
+  {
+    stationCode: "BCT",
+    stationName: "Mumbai Central",
+    lat: 18.969,
+    lng: 72.819,
+  },
+],
   };
 
   const insights = generateAIInsights({

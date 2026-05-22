@@ -114,13 +114,22 @@ setMessages(updatedMessages);
       let parsed;
 
       try {
-        parsed = JSON.parse(data.reply);
-      } catch {
-        parsed = {
-          title: "RailTrace AI",
-          summary: data.reply,
-        };
-      }
+  parsed = JSON.parse(data.reply);
+
+  if (!parsed) {
+    parsed = {
+      title: "Train Not Found",
+      summary:
+        "No train was found with that train number.",
+      status: "NOT FOUND",
+    };
+  }
+} catch {
+  parsed = {
+    title: "RailTrace AI",
+    summary: data.reply,
+  };
+}
 
       setResult(parsed);
 

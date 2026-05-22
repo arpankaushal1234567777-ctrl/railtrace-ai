@@ -1,14 +1,16 @@
 export function detectQueryType(query: string) {
-  const q = query.trim();
+  const q = query.trim().toUpperCase();
 
+  // PNR
   if (/^\d{10}$/.test(q)) {
     return "pnr";
   }
 
-  if (/^\d{4,5}$/.test(q)) {
-    return "train";
-  }
+  if (/^\d{3,6}$/.test(q)) {
+  return "train";
+}
 
+  // Station Code
   if (/^[A-Z]{2,5}$/.test(q)) {
     return "station";
   }

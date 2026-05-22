@@ -1,74 +1,65 @@
+import { connectDB } from "./mongodb";
+import Train from "@/models/Train";
+import TrainSchedule from "@/models/TrainSchedule";
 import { generateAIInsights } from "./aiInsights";
 
-export async function getTrainData(trainNumber: string) {
+export async function getTrainData(
+  trainNumber: string
+) {
+  await connectDB();
 
-  const train = {
-    title: "Rajdhani Express",
+  const train = await Train.findOne({
+    trainNumber,
+  }).lean();
 
-    summary:
-      "India's premier train, connecting Delhi to Mumbai.",
+  if (!train) {
+    return null;
+  }
 
-    status: "LIVE",
-
-    delay: 18,
-    speed: 72,
-
-    details: {
-      trainNumber: trainNumber,
-      trainName: "Rajdhani Express",
-      source: "Hazrat Nizamuddin",
-      destination: "Bandra Terminus",
-      duration: "8 hours 30 minutes",
-      occupancy: 72,
-    },
-
-    route: [
-  {
-    stationCode: "NZM",
-    stationName: "Hazrat Nizamuddin",
-    lat: 28.588,
-    lng: 77.254,
-  },
-
-  {
-    stationCode: "AGR",
-    stationName: "Agra Cantt",
-    lat: 27.153,
-    lng: 78.024,
-  },
-
-  {
-    stationCode: "MTJ",
-    stationName: "Mathura Junction",
-    lat: 27.492,
-    lng: 77.673,
-  },
-
-  {
-    stationCode: "KOTA",
-    stationName: "Kota Junction",
-    lat: 25.213,
-    lng: 75.864,
-  },
-
-  {
-    stationCode: "BCT",
-    stationName: "Mumbai Central",
-    lat: 18.969,
-    lng: 72.819,
-  },
-],
-  };
+  const schedules = await TrainSchedule.find({
+    trainNumber,
+  })
+    .sort({ sequence: 1 })
+    .lean();
 
   const insights = generateAIInsights({
-    delay: train.delay,
-    speed: train.speed,
-    stationCount: train.route.length,
-    occupancy: train.details.occupancy,
+    delay: train.delay || 0,
+    speed: train.speed || 60,
+    stationCount: schedules.length,
+    occupancy: train.occupancy || 50,
   });
 
   return {
-    ...train,
+    title: train.trainName,
+
+    summary: `${train.source} → ${train.destination}`,
+
+    status:
+      (train.delay || 0) > 15
+        ? "DELAYED"
+        : "LIVE",
+
+    delay: train.delay || 0,
+
+    speed: train.speed || 60,
+
+    details: {
+      trainNumber: train.trainNumber,
+      trainName: train.trainName,
+      source: train.source,
+      destination: train.destination,
+      duration: train.duration || "N/A",
+      occupancy: train.occupancy || 50,
+    },
+
+    route: schedules.map((station) => ({
+      stationCode: station.stationCode,
+      stationName: station.stationName,
+      arrivalTime: station.arrivalTime,
+      departureTime: station.departureTime,
+      distance: station.distance,
+    })),
+
     insights,
   };
 }

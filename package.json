@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "import:trains": "tsx scripts/importTrains.ts"
+    "import:trains": "tsx scripts/importTrains.ts",
+    "import:schedules": "tsx scripts/importSchedules.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.0",

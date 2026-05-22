@@ -11,7 +11,11 @@ export async function POST(req: Request) {
   messages = [],
 } = body;
 
+
+
 if (type === "train") {
+  console.log("TRAIN ROUTE EXECUTED");
+
   const data = await getTrainData(message);
 
   return NextResponse.json({
@@ -19,7 +23,6 @@ if (type === "train") {
     reply: JSON.stringify(data),
   });
 }
-
     const completion = await groq.chat.completions.create({
       model: "llama-3.1-8b-instant",
       messages: [

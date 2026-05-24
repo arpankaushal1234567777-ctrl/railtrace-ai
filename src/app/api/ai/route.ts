@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import groq from "@/lib/groq";
 import { getTrainData } from "@/lib/railway";
 import { answerTrainQuery } from "@/lib/trainQuery";
+import { answerStationQuery }
+from "@/lib/stationQuery";
 
 export async function POST(req: Request) {
   try {
@@ -24,14 +26,16 @@ export async function POST(req: Request) {
     }
 
     // MongoDB-powered railway copilot
-    const dbAnswer = await answerTrainQuery(message);
+const dbAnswer =
+  (await answerTrainQuery(message)) ||
+  (await answerStationQuery(message));
 
-    if (dbAnswer) {
-      return NextResponse.json({
-        success: true,
-        reply: JSON.stringify(dbAnswer),
-      });
-    }
+if (dbAnswer) {
+  return NextResponse.json({
+  success: true,
+  reply: dbAnswer,
+});
+}
 
     // Fallback to Groq AI
     const completion =

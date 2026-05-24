@@ -4,6 +4,8 @@ import { getTrainData } from "@/lib/railway";
 import { answerTrainQuery } from "@/lib/trainQuery";
 import { answerStationQuery }
 from "@/lib/stationQuery";
+import { answerJourneyQuery }
+from "@/lib/journeyQuery";
 
 export async function POST(req: Request) {
   try {
@@ -37,6 +39,15 @@ if (dbAnswer) {
 });
 }
 
+const journeyAnswer =
+  await answerJourneyQuery(message);
+
+if (journeyAnswer) {
+  return NextResponse.json({
+    success: true,
+    reply: journeyAnswer,
+  });
+}
     // Fallback to Groq AI
     const completion =
       await groq.chat.completions.create({

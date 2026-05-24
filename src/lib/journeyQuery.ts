@@ -107,10 +107,20 @@ export async function answerJourneyQuery(
     };
   }
 
-  return {
-    title: "Journey Search",
-    summary: `${uniqueTrains.length} trains found between ${source} and ${destination}.`,
-    status: "SUCCESS",
-    trains: uniqueTrains.slice(0, 50),
-  };
+  const Train =
+  (await import("@/models/Train")).default;
+
+const trainDetails =
+  await Train.find({
+    trainNumber: {
+      $in: uniqueTrains.slice(0, 20),
+    },
+  });
+
+return {
+  title: "Journey Search",
+  summary: `${uniqueTrains.length} trains found between ${source} and ${destination}.`,
+  status: "SUCCESS",
+  trains: trainDetails,
+};
 }

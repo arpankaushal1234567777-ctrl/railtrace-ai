@@ -1,34 +1,47 @@
 import { NextResponse } from "next/server";
 import groq from "@/lib/groq";
 import { getTrainData } from "@/lib/railway";
+import { answerTrainQuery } from "@/lib/trainQuery";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+
     const {
-  message,
-  type,
-  messages = [],
-} = body;
+      message,
+      type,
+      messages = [],
+    } = body;
 
+    // Direct train number search
+    if (type === "train") {
+      const data = await getTrainData(message);
 
+      return NextResponse.json({
+        success: true,
+        reply: JSON.stringify(data),
+      });
+    }
 
-if (type === "train") {
-  console.log("TRAIN ROUTE EXECUTED");
+    // MongoDB-powered railway copilot
+    const dbAnswer = await answerTrainQuery(message);
 
-  const data = await getTrainData(message);
+    if (dbAnswer) {
+      return NextResponse.json({
+        success: true,
+        reply: JSON.stringify(dbAnswer),
+      });
+    }
 
-  return NextResponse.json({
-    success: true,
-    reply: JSON.stringify(data),
-  });
-}
-    const completion = await groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
-      messages: [
-  {
-    role: "system",
-    content: `
+    // Fallback to Groq AI
+    const completion =
+      await groq.chat.completions.create({
+        model: "llama-3.1-8b-instant",
+
+        messages: [
+          {
+            role: "system",
+            content: `
 You are RailTrace AI,
 an intelligent Indian Railways copilot.
 
@@ -74,15 +87,17 @@ Use realistic railway statuses like:
 No markdown.
 No explanation outside JSON.
 `,
-  },
+          },
 
-  ...messages,
-],
-    });
+          ...messages,
+        ],
+      });
 
     return NextResponse.json({
       success: true,
-      reply: completion.choices[0]?.message?.content,
+      reply:
+        completion.choices[0]?.message
+          ?.content,
     });
   } catch (error: any) {
     console.error(error);
@@ -92,7 +107,9 @@ No explanation outside JSON.
         success: false,
         error: "AI request failed",
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     );
   }
 }
